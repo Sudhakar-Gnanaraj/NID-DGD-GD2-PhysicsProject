@@ -21,7 +21,7 @@ public class RandomForce : MonoBehaviour
     }
     void AddForce()
     {
-        rb.linearVelocityY = forceValue;
+        rb.linearVelocityX = forceValue;
     }
 
 }
