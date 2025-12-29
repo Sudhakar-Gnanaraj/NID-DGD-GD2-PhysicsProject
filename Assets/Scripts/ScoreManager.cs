@@ -23,7 +23,7 @@ public class ScoreManager : MonoBehaviour
     void Start()
     {
         scoreUpdateText.enabled = false;
-        scoreKeeper.ResetScore();
+        //scoreKeeper.ResetScore();
     }
     void Update()
     {

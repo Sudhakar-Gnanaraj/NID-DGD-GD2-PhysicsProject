@@ -38,9 +38,9 @@ public class ScoreKeeper : MonoBehaviour
         score  = 0;
     }
 
-    public int GetScore()
+    public string GetScore()
     {
-        return score;
+        return score.ToString();
     }
 
 }
