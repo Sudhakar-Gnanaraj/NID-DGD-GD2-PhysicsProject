@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class ScoreManager : MonoBehaviour
 {
@@ -12,10 +13,17 @@ public class ScoreManager : MonoBehaviour
     [SerializeField] float updateShowTime = 2f;
     int points = 0;
     Coroutine updateCo;
+    ScoreKeeper scoreKeeper;
+
+    void Awake()
+    {
+        scoreKeeper = FindAnyObjectByType<ScoreKeeper>();
+    }
 
     void Start()
     {
         scoreUpdateText.enabled = false;
+        scoreKeeper.ResetScore();
     }
     void Update()
     {
@@ -27,11 +35,13 @@ public class ScoreManager : MonoBehaviour
         {
             points += pointsToAdd;
             ScoreUpdate(value);
+            scoreKeeper.AddScore(pointsToAdd);
         }
         else
         {
             points -= pointsToRemove;
             ScoreUpdate(value);
+            scoreKeeper.ReduceScore(pointsToRemove);
         }
     }
 
@@ -47,7 +57,7 @@ public class ScoreManager : MonoBehaviour
     {
         if (colour)
         {
-            scoreUpdateText.color = Color.green;
+            scoreUpdateText.color = Color.forestGreen;
             scoreUpdateText.text = "+" + pointsToAdd;
         }
         else
