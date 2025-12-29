@@ -1,11 +1,13 @@
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 
 public class ScoreKeeper : MonoBehaviour
 {
     public static ScoreKeeper Instance;
 
-    private int score = 0;
+    private static int score = 0;
+    private static int level = 1;
 
     void Awake()
     {
@@ -22,6 +24,7 @@ public class ScoreKeeper : MonoBehaviour
         // Make it persistent across scenes
         DontDestroyOnLoad(gameObject);
     }
+
 
     public void AddScore(int update)
     {
@@ -41,6 +44,16 @@ public class ScoreKeeper : MonoBehaviour
     public string GetScore()
     {
         return score.ToString();
+    }
+
+    public void UpdateLevel(int l)
+    {
+        level = l;
+    }
+
+    public int GetLevel()
+    {
+        return level;
     }
 
 }

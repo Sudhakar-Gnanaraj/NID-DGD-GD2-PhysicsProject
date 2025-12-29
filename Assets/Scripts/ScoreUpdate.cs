@@ -11,9 +11,18 @@ public class ScoreUpdate : MonoBehaviour
     {
         scoreKeeper = FindAnyObjectByType<ScoreKeeper>();
     }
+
+    void Start()
+    {
+          
+    }
     void Update()
     {
-        scoreText.text = scoreKeeper.GetScore();
+        if (scoreKeeper == null)
+            scoreKeeper = FindAnyObjectByType<ScoreKeeper>();
+
+        if (scoreKeeper != null)
+            scoreText.text = scoreKeeper.GetScore();
     }
 
     

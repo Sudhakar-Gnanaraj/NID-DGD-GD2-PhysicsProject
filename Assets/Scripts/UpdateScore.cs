@@ -5,6 +5,7 @@ public class UpdateScore : MonoBehaviour
     ScoreManager scoreManager;
     AudioPlayer audioPlayer;
     LevelManager levelManager;
+    [SerializeField] string compareTag;
 
     void Awake()
     {
@@ -14,16 +15,18 @@ public class UpdateScore : MonoBehaviour
     }
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Potato"))
+        if (collision.CompareTag(compareTag))
         {
             scoreManager.ChangeScore(true);
             audioPlayer.PlayCorrectClip();
             levelManager.UpdateTotalObjects();
         }
-        else if (collision.CompareTag("Rock"))
+        else
         {
             scoreManager.ChangeScore(false);
             audioPlayer.PlayWrongClip();
+            if(collision.CompareTag("Potato") || collision.CompareTag("Onion"))
+                levelManager.UpdateTotalObjects();
         }
     
     }

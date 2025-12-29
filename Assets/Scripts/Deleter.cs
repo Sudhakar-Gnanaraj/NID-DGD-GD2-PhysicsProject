@@ -12,7 +12,7 @@ public class Deleter : MonoBehaviour
     void OnTriggerEnter2D(Collider2D collision)
     {
         Destroy(collision.gameObject);
-        if(collision.CompareTag("Potato"))
+        if(collision.CompareTag("Potato") || collision.CompareTag("Onion"))
             levelManager.UpdateTotalObjects();
     }
 }

@@ -6,6 +6,7 @@ public class ReplayButton : MonoBehaviour
     SpriteRenderer sr;
     Color originalColor;
     [SerializeField] Color hoverColor = Color.green;
+    [SerializeField] string buttonDetail;
     ScoreKeeper scoreKeeper;
 
     void Awake()
@@ -26,7 +27,18 @@ public class ReplayButton : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 scoreKeeper.ResetScore();
-                SceneManager.LoadScene("Level 2");
+                if(buttonDetail == "Level 1")
+                    SceneManager.LoadScene("Level 1");
+                else if(buttonDetail == "Level 2")
+                    SceneManager.LoadScene("Level 2");
+                else if(buttonDetail == "Replay")
+                    SceneManager.LoadScene(scoreKeeper.GetLevel());
+                else if(buttonDetail == "Play")
+                    SceneManager.LoadScene("LevelSelect");
+                else if(buttonDetail == "Main")
+                    SceneManager.LoadScene("MainMenu");
+                else if(buttonDetail == "Exit")
+                    Application.Quit();
             }
         }
         else

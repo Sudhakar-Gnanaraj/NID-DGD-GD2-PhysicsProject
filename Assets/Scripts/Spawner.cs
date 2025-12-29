@@ -1,31 +1,39 @@
 using System.Collections;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 public class Spawner : MonoBehaviour
 {
     [SerializeField] GameObject potato;
+    [SerializeField] GameObject onion;
     [SerializeField] Sprite[] potatoes;
+    [SerializeField] Sprite[] onions;
 
     [SerializeField] GameObject rock;
     [SerializeField] Sprite[] rocks;
 
-    [SerializeField] float timeBetweenSpawn = 1f;
-
+    [SerializeField] float minTimeBetweenSpawn = 3f;
+    [SerializeField] float maxTimeBetweenSpawn = 5f;
+    [SerializeField] float spawnInterval = 2f;
+    float nextTimeToSpawn;
+    [SerializeField] string currentLevel;
     MassRandomizer massRandomizer;
     LevelManager levelManager;
 
     Vector3 originalScalePotato = new Vector3(0.5f, 0.5f, 0f);
+    Vector3 originalScaleOnion = new Vector3(0.5f, 0.5f, 0f);
     Vector3 originalScaleRock   = new Vector3(0.5f, 0.5f, 0f);
 
     float originalMassPotato;
     float originalMassRock;
 
     Coroutine spawnCo;
+    int totalPotato, totalOnion, potatoesSpawned = 0, onionsSpawned = 0;
 
     void Awake()
-    {
+    {   nextTimeToSpawn = Time.time +Random.Range(minTimeBetweenSpawn, maxTimeBetweenSpawn);
         massRandomizer = FindAnyObjectByType<MassRandomizer>();
         levelManager   = FindAnyObjectByType<LevelManager>();
 
@@ -35,7 +43,20 @@ public class Spawner : MonoBehaviour
 
     void Start()
     {
+
         spawnCo = StartCoroutine(SpawnLoop());
+        if (currentLevel == "Level 1")
+        {
+            totalPotato = levelManager.getPotatoCount();
+            totalOnion = 0;
+        }
+        else
+        {
+            totalPotato = levelManager.getPotatoCount()/2;
+            totalOnion = levelManager.getPotatoCount()/2;
+        }
+        potatoesSpawned = 0;
+        onionsSpawned = 0;
     }
 
     IEnumerator SpawnLoop()
@@ -54,13 +75,13 @@ public class Spawner : MonoBehaviour
                 yield break;          // stop coroutine
             }
 
-            yield return new WaitForSeconds(timeBetweenSpawn);
+            yield return new WaitForSeconds(spawnInterval);
         }
     }
 
     void Spawn()
     {
-        float rd = Random.Range(0f, 100f);
+        /*float rd = Random.Range(0f, 100f);
 
         if (rd > 65)
         {
@@ -76,7 +97,67 @@ public class Spawner : MonoBehaviour
             GameObject clone = Instantiate(rock, transform.position, quaternion.identity);
             massRandomizer.ChangeMass(clone, originalScaleRock, originalMassRock);
             clone.GetComponent<SpriteRenderer>().sprite = rocks[randomizer()];
+        }*/
+        if(nextTimeToSpawn <= Time.time)
+        {   
+            if(currentLevel == "Level 1")
+            {
+                // Spawn potato
+                GameObject clone = Instantiate(potato, transform.position, quaternion.identity);
+                massRandomizer.ChangeMass(clone, originalScalePotato, originalMassPotato);
+                clone.GetComponent<SpriteRenderer>().sprite = potatoes[randomizer()];
+                nextTimeToSpawn += Random.Range(minTimeBetweenSpawn, maxTimeBetweenSpawn);
+                levelManager.updatePotatoCount();
+            }
+            else
+            {
+                float r = Random.Range(0,100);
+
+                if (r <= 50 && potatoesSpawned < totalPotato)
+                {
+                    // Spawn potato
+                    GameObject clone = Instantiate(potato, transform.position, quaternion.identity);
+                    massRandomizer.ChangeMass(clone, originalScalePotato, originalMassPotato);
+                    clone.GetComponent<SpriteRenderer>().sprite = potatoes[randomizer()];
+                    nextTimeToSpawn += Random.Range(minTimeBetweenSpawn, maxTimeBetweenSpawn);
+                    levelManager.updatePotatoCount();
+                    potatoesSpawned++;
+                }
+                else if (r > 50 && onionsSpawned < totalOnion)
+                {
+                    // Spawn onion
+                    GameObject clone = Instantiate(onion, transform.position, quaternion.identity);
+                    massRandomizer.ChangeMass(clone, originalScalePotato, originalMassPotato);
+                    //clone.GetComponent<SpriteRenderer>().sprite = onions[randomizer()];
+                    nextTimeToSpawn += Random.Range(minTimeBetweenSpawn, maxTimeBetweenSpawn);
+                    levelManager.updatePotatoCount();
+                    onionsSpawned++;
+                }
+                else if(potatoesSpawned < totalPotato)
+                {
+                    GameObject clone = Instantiate(potato, transform.position, quaternion.identity);
+                    massRandomizer.ChangeMass(clone, originalScalePotato, originalMassPotato);
+                    clone.GetComponent<SpriteRenderer>().sprite = potatoes[randomizer()];
+                    nextTimeToSpawn += Random.Range(minTimeBetweenSpawn, maxTimeBetweenSpawn);
+                    levelManager.updatePotatoCount();
+                }
+                else
+                {
+                    GameObject clone = Instantiate(onion, transform.position, quaternion.identity);
+                    massRandomizer.ChangeMass(clone, originalScalePotato, originalMassPotato);
+                    //clone.GetComponent<SpriteRenderer>().sprite = potatoes[randomizer()];
+                    nextTimeToSpawn += Random.Range(minTimeBetweenSpawn, maxTimeBetweenSpawn);
+                    levelManager.updatePotatoCount();
+                }
+            }
         }
+        else
+        {
+            GameObject clone = Instantiate(rock, transform.position, quaternion.identity);
+            massRandomizer.ChangeMass(clone, originalScaleRock, originalMassRock);
+            clone.GetComponent<SpriteRenderer>().sprite = rocks[randomizer()];
+        }
+
     }
 
     int randomizer()
