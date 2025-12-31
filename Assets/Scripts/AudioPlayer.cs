@@ -11,6 +11,9 @@ public class AudioPlayer : MonoBehaviour
 
     [SerializeField] AudioClip wrongSound;
     [Range(0f, 1f)] public float wrongVolume = 1f;
+
+    [SerializeField] AudioClip clickSound;
+    [Range(0f, 1f)] public float clickVolume = 1f;
     
     [SerializeField] AudioClip bgMusic;
 
@@ -76,6 +79,11 @@ public class AudioPlayer : MonoBehaviour
     public void PlayWrongClip()
     {
         PlayClip(wrongSound, correctVolume);
+    }
+
+    public void PlayClickClip()
+    {
+        PlayClip(clickSound, clickVolume);
     }
 
     public void PlayBgClip()

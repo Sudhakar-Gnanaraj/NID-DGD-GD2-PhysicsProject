@@ -17,13 +17,20 @@ public class UpdateScore : MonoBehaviour
     {
         if (collision.CompareTag(compareTag))
         {
-            scoreManager.ChangeScore(true);
+            scoreManager.ChangeScore(true,10);
             audioPlayer.PlayCorrectClip();
             levelManager.UpdateTotalObjects();
         }
+        else if (collision.CompareTag("Rock"))
+        {
+            scoreManager.ChangeScore(false,10);
+            audioPlayer.PlayWrongClip();
+            if(collision.CompareTag("Potato") || collision.CompareTag("Onion"))
+                levelManager.UpdateTotalObjects();
+        }
         else
         {
-            scoreManager.ChangeScore(false);
+            scoreManager.ChangeScore(true,2);
             audioPlayer.PlayWrongClip();
             if(collision.CompareTag("Potato") || collision.CompareTag("Onion"))
                 levelManager.UpdateTotalObjects();

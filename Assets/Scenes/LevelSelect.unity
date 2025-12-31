@@ -4378,6 +4378,10 @@ PrefabInstance:
       value: AudioManager
       objectReference: {fileID: 0}
     - target: {fileID: 5294130489772880900, guid: 4d758c74d3b69354db5b36b5833129b4, type: 3}
+      propertyPath: clickSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 4c4d947717792eb49a41f600489bbceb, type: 3}
+    - target: {fileID: 5294130489772880900, guid: 4d758c74d3b69354db5b36b5833129b4, type: 3}
       propertyPath: paddleSound
       value: 
       objectReference: {fileID: 8300000, guid: e8f996a45184d7749b7932f648c4230d, type: 3}
