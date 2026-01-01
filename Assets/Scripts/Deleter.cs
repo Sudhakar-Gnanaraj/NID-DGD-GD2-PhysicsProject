@@ -11,8 +11,13 @@ public class Deleter : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        Destroy(collision.gameObject);
-        if(collision.CompareTag("Potato") || collision.CompareTag("Onion"))
+        // Disable object instead of destroying
+        collision.gameObject.SetActive(false);
+
+        // If it's a collectible object, update the level counts
+        if (collision.CompareTag("Potato") || collision.CompareTag("Onion"))
+        {
             levelManager.UpdateTotalObjects();
+        }
     }
 }

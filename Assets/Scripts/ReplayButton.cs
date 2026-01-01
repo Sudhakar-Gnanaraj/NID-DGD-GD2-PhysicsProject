@@ -36,7 +36,6 @@ public class ReplayButton : MonoBehaviour
 
                 if (levelCo != null)
                     StopCoroutine(levelCo);
-
                 levelCo = StartCoroutine(LevelSwitch());
             }
         }

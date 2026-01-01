@@ -4,6 +4,7 @@ public class FakeDelete : MonoBehaviour
 {
     void OnTriggerEnter2D(Collider2D collision)
     {
-        Destroy(collision.gameObject);
+        // Instead of destroying, return object back to pool
+        collision.gameObject.SetActive(false);
     }
 }
